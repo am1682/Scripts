@@ -14,8 +14,11 @@
     :set end 1;
 }
 :if (($2 = "print") || (([:len $2] = 0) && ($end != 1)) ) do={
-    /ip dhcp-server lease print where comment~"$1";
-    /ip hotspot ip-binding print where comment~"$1"; 
+    :if ([:len [/ip dhcp-server lease find comment~"$1"]]>0) do={/ip dhcp-server lease print where comment~"$1";};
+    :if ([:len [/ip hotspot ip-binding find comment~"$1"]]>0) do={/ip hotspot ip-binding print where comment~"$1";};
+	:if ([:len [/ip dhcp-server lease find mac-address~"$1"]]>0) do={/ip dhcp-server lease print where mac-address~"$1";};
+    :if ([:len [/ip hotspot ip-binding find mac-address~"$1"]]>0) do={/ip hotspot ip-binding print where mac-address~"$1";};
+	:if ([:len [/ip dhcp-server lease find address~"$1"]]>0) do={/ip dhcp-server lease print where address~"$1";};
     :put "Print Completed:bye! --$globalname --$0";
     :set end 1;
 };
