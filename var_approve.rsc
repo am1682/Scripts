@@ -1,15 +1,13 @@
-### /im var_approve.rsc; $approve Global-Seven MAC/Toronto 29; $approve github.com REMOVE;$approve (Global-Seven/MAC) print;$approve to refresh;
-:global im;
-$im func p=1 v=$v; :global func;
-#$im func p=1; :global func;
-$im var v=$v; :global var;
-#$im var; :global var;
+### /im var_approve.rsc; $approve Global-Seven MAC/Toronto 29; $approve Global-Seven REMOVE;$approve (Global-Seven/MAC) print;$approve to refresh;
+:global func; :global var;
+:if (([:len $func] = 0) || ([:len $var] = 0)) do={:global im;$im func p=1 v=$v;$im var v=$v;};
 :local globalname approve;
 :local dir [$func dir];:local timestamp [$func timestamp];
-##resolve $2 to macaddress if user input is username of hotspot
 :local end;
 :local macaddr $2;
-:local ipaddr ([$var SubnetLAN] . "$3");
+:do {:set macaddr [/ip hotspot active get [find user=$2] mac-address]} on-error={:if ($v > 0) do={:put "Please confirm MAC address: $2";}};
+:local ipaddr ([$var SubnetLAN v=$v] . "$3");
+:if ($v > 0) do={:put "IP Address Proposed: $ipaddr --$globalname --$0";}
 :if (([:len $1] = 0)  || ($1 = "var_$globalname.rsc")  || ($1 = $globalname)) do={
     [$func global $globalname v=$v]
     :if ($v > 0) do={:put "Global variable Ready: $globalname --$0";}
@@ -41,6 +39,6 @@ $im var v=$v; :global var;
     do {/ip dhcp-server lease add mac-address=$macaddr address=$ipaddr server=SubnetGuest comment="var_$globalname.rsc-$1=$3-$timestamp";:put "Static IP $ipaddr Assigned: $1 --$globalname --$0"} on-error={:put "Failed when adding dhcp-server lease:$1 --$globalname --$0"};
     do {/ip hotspot ip-binding add type=bypassed mac-address=$macaddr comment="var_$globalname.rsc-$1=$3-$timestamp";:put "Hotspot Bypassed: $1 --$globalname --$0"} on-error={:put "Failed when adding hotspot ip-binding:$1 --$globalname --$0"};
 };
-$im var v=$v;:global var;$var ("$0-log") ("$0 $1 $2 $3 $4 $5") f=1 a=1 v=$v;
+:global var;$var ("$0-log") ("$0 $1 $2 $3 $4 $5") f=1 a=1 v=$v;
 
 if ($v > 0) do={:put "End of file $globalname --$globalname --$0";}

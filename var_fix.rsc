@@ -1,7 +1,8 @@
 ### /im var_fix.rsc; $fix github.com (rem=github) (direct); $fix github.com REMOVE;$fix (ALL/google.com/V2EX) print; $fix ALL REMOVE;$fix to refresh;
 ##:global GMadd [:parse [/file get "2021Gracemode-Add.rsc" content]]
 #add api.github.com
-:global im; $im func p=1 v=$v; :global func;
+:global func;:global var;
+:if (([:len $func] = 0) || ([:len $var] = 0)) do={:global im;$im func p=1 v=$v;$im var v=$v;};
 :local globalname fix;
 :local disab no;
 :local dir [$func dir];
@@ -36,6 +37,6 @@
         do {/ip route rule add dst-address=$svrip table=LAN-Auto comment="var_$globalname.rsc-$remark=$1-$svrip-$timestamp" disabled=$disab} on-error={:put "Failed when adding route rule:$1 --$0"};
     };
     ##Use execute to silent output text.
-    $im var v=$v;:global var;$var ("$0-log") ("$0 $1 $2 $3 $4 $5 rem=$rem") f=1 a=1 v=$v;
+    $var ("$0-log") ("$0 $1 $2 $3 $4 $5 rem=$rem") f=1 a=1 v=$v;
 }
 if ($v > 0) do={:put "End of file $globalname --$0";}

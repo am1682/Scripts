@@ -5,7 +5,8 @@
 ##$globalname $1 return&put value for variable name $1
 ##$globalname $1 $2 set value of $1 as $2
 ##$globalname $1 REMOVE will remove variable $1 altogether.
-:global im; $im func p=1 v=$v; :global func;
+:global func;:global var;
+:if (([:len $func] = 0) || ([:len $var] = 0)) do={:global im;$im func p=1 v=$v;$im var v=$v;};
 :local file "var_ver.rsc";:local end;
 :local dir [$func dir v=$v];:local timestamp [$func timestamp];
 :local emailto "Version_Control<allros@163.com>";
@@ -49,7 +50,7 @@
     :put "Sending email to $emailto for this event. $globalname --$0"
     /tool e-mail send to=$emailto subject="$[/system identity get name]:$1 is now <Version $2>#Version_Control#" body="$[/system identity get name]:$1 is now <Version $2>#Version_Control#\r\n--Sent from $file"
 }
-$im var v=$v;:global var;$var ("$0-log") ("$0 $1 $2 $3 $4 $5") f=1 a=1 v=$v; 
+$var ("$0-log") ("$0 $1 $2 $3 $4 $5") f=1 a=1 v=$v; 
 ##Code below does not work. Don't know why...
 #:if ($r=1) do={
 #    :put "Retained: global variable $globalname"
