@@ -1,4 +1,4 @@
-### /im var_approve.rsc; $approve Global-Seven MAC/Toronto 29; $approve Global-Seven REMOVE;$approve (Global-Seven/MAC) print;$approve to refresh;
+### /im var_approve.rsc; $approve Global-Seven MAC/Toronto 29; $approve Global-Seven REMOVE;$approve Global-Seven/MAC (print);;$approve to refresh;
 :global func; :global var;
 :if (([:len $func] = 0) || ([:len $var] = 0)) do={:global im;$im func p=1 v=$v;$im var v=$v;};
 :local globalname approve;
@@ -13,9 +13,15 @@
     :if ($v > 0) do={:put "Global variable Ready: $globalname --$0";}
     :set end 1;
 }
-:if (($1 = "print") || ($2 = "print")) do={
-    /ip dhcp-server lease print terse where comment~"$1";
-    /ip hotspot ip-binding print terse  where comment~"$1"; 
+:if (($2 = "print") || (([:len $2] = 0) && ($end != 1)) ) do={
+    /ip dhcp-server lease print where comment~"$1";
+    /ip hotspot ip-binding print where comment~"$1"; 
+    :put "Print Completed:bye! --$globalname --$0";
+    :set end 1;
+};
+:if ($1 = "print") do={
+    /ip dhcp-server lease print where comment~"var_$globalname.rsc-";
+    /ip hotspot ip-binding print where comment~"var_$globalname.rsc-"; 
     :put "Print Completed:bye! --$globalname --$0";
     :set end 1;
 };
