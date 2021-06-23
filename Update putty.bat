@@ -1,0 +1,2 @@
+##this file only update putty.exe. Other files not included
+powershell -Command "(New-Object Net.WebClient).DownloadFile('https://the.earth.li/~sgtatham/putty/latest/w64/putty.exe', '%programfiles%\Software Portable\PuTTy\putty.exe')"

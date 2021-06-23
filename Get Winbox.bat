@@ -1,0 +1,2 @@
+powershell -Command "(New-Object Net.WebClient).DownloadFile('https://mt.lv/winbox64', '%programfiles%\Software Portable\Winbox\winbox.exe')"
+explorer /select,"%programfiles%\Software Portable\Winbox\winbox.exe"

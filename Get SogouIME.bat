@@ -1,0 +1,3 @@
+::rem powershell -Command "(New-Object Net.WebClient).DownloadFile(((Invoke-WebRequest -UseBasicParsing -Uri 'https://pinyin.sogou.com/').Links | Where-Object {$_.href -like '*pinyinbanner*'} ).href, '%temp%\SogouIME.exe')"
+powershell -Command "Start-BitsTransfer -Source ((Invoke-WebRequest -UseBasicParsing -Uri 'https://pinyin.sogou.com/').Links | Where-Object {$_.href -like '*pinyinbanner*'} ).href -Destination '%temp%\SogouIME.exe'"
+explorer /select,"%temp%\SogouIME.exe"
